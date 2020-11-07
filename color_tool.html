@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fell in love with a girl, I fell in love once and I'm lost completely</title>
+    <style type="text/css">
+#canvas {
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    max-width: 288px;
+}
+#canvas > div {
+    width: 16px;
+    height: 16px;
+    background: black;
+    border: 1px solid #00ff00;
+}
+#canvas .black {
+    background: black;
+}
+#canvas .red {
+    background: red;
+}
+#canvas .white {
+    background: white;
+}
+#canvas .grey {
+    background: grey;
+}
+</style>
+</head>
+<body>
+    <div id="canvas"></div>
+    <div id="output">
+        <b>black</b>
+        <pre id="black"></pre><br />
+        <b>red</b>
+        <pre id="red"></pre><br />
+        <b>white</b>
+        <pre id="white"></pre><br />
+        <b>grey</b>
+        <pre id="grey"></pre><br />
+    </div>
+    <script type="text/javascript">
+const STARTING_BACKGROUND = 'black';
+const canvas = document.getElementById("canvas");
+const colors = {
+    black: [],
+    red: [],
+    white: [],
+    grey: [],
+}
+
+const drawResults = () => {
+    Object.keys(colors).forEach(color => {
+        document.getElementById(color).innerHTML =
+            colors[color].join(',');
+    })
+}
+
+for (let i = 0; i < 256; i++) {
+    const newDiv = document.createElement('div');
+    newDiv.id = "square-" + i;
+    canvas.appendChild(newDiv);
+    let currentBackground = STARTING_BACKGROUND;
+    newDiv.classList.add(currentBackground);
+    colors[currentBackground].push(i);
+
+    // add event listener
+    newDiv.addEventListener('click', event => {
+        newDiv.classList.remove(currentBackground);
+        colors[currentBackground] = colors[currentBackground].filter(x => x !== i);
+        switch (currentBackground) {
+            case 'black':
+                currentBackground = 'red';
+                break;
+            case 'red':
+                currentBackground = 'white';
+                break;
+            case 'white':
+                currentBackground = 'grey';
+                break;
+            default:
+                currentBackground = 'black';
+                break;
+        }
+        newDiv.classList.add(currentBackground)
+        colors[currentBackground].push(i);
+        drawResults();
+    })
+}
+
+drawResults();
+    </script>
+</body>
+</html>
